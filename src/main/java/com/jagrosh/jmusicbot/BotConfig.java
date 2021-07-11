@@ -23,8 +23,8 @@ import com.typesafe.config.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Activity;
 
 /**
  * 
@@ -42,9 +42,9 @@ public class BotConfig
     private String token, prefix, altprefix, helpWord, playlistsFolder,
             successEmoji, warningEmoji, errorEmoji, loadingEmoji, searchingEmoji;
     private boolean stayInChannel, songInGame, npImages, updatealerts, useEval, dbots;
-    private long owner, maxSeconds;
+    private long owner, maxSeconds, aloneTimeUntilStop;
     private OnlineStatus status;
-    private Game game;
+    private Activity game;
     private Config aliases;
 
 
@@ -94,6 +94,7 @@ public class BotConfig
             updatealerts = config.getBoolean("updatealerts");
             useEval = config.getBoolean("eval");
             maxSeconds = config.getLong("maxtime");
+            aloneTimeUntilStop = config.getLong("alonetimeuntilstop");
             playlistsFolder = config.getString("playlistsfolder");
             aliases = config.getConfig("aliases");
             dbots = owner == 113156185389092864L;
@@ -239,7 +240,7 @@ public class BotConfig
         return searchingEmoji;
     }
     
-    public Game getGame()
+    public Activity getGame()
     {
         return game;
     }
@@ -297,6 +298,11 @@ public class BotConfig
     public String getMaxTime()
     {
         return FormatUtil.formatTime(maxSeconds * 1000);
+    }
+
+    public long getAloneTimeUntilStop()
+    {
+        return aloneTimeUntilStop;
     }
     
     public boolean isTooLong(AudioTrack track)
